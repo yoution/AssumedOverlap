@@ -8,8 +8,8 @@ compositing过程是沿着paintLayer进行深度遍历，子paintLayer根据stac
 * kCompositingReasonVideoOverlay，父级路径上最近的能compositing的paintLayer的layoutObject为video标签
 * kCompositingReasonOverflowScrollingParent，父级paintLayer为overflow，且出现滚动条
 * kCompositingReason3DTransform，如transform:perspective(400px),transform: translateZ(10)，transform:scaleZ(0.5)等
-* kCompositingReasonActiveAnimation, 包括opacityAnimation,transformAnimation,filterAnimation,backDropFilterAnimation
-* kCompositingReasonWillChangeCompositingHint,包括opacity,transform, translate, scale, rotate, top, left, bottom, right
+* kCompositingReasonActiveAnimation, 包括opacityAnimation, transformAnimation，filterAnimation，backDropFilterAnimation
+* kCompositingReasonWillChangeCompositingHint,包括opacity，transform, translate, scale, rotate, top, left, bottom, right
 * kCompositingReasonBackdropFilter，即 backdrop-filter
 
 ## AssumedOverlap 产生
@@ -24,7 +24,7 @@ compositing过程是沿着paintLayer进行深度遍历，子paintLayer根据stac
 
 * [`demo2`](https://codepen.io/yoution/pen/paOQxa)
 ![demo2](./images/demo2.png)
-蓝色方块和黄色方块dom顺序调换，同时提示蓝色方块的z-index，结果同demo1，应为在stackingContext中的遍历顺序不变   
+蓝色方块和黄色方块dom顺序调换，同时提示蓝色方块的z-index，结果同demo1，因为在stackingContext中的遍历顺序不变，所以结果一样   
 
 * [`demo3`](https://codepen.io/yoution/pen/bLxQPr)
 ![demo3](./images/demo3.png)
