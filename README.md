@@ -20,7 +20,15 @@ compositing过程是沿着paintLayer进行深度遍历，子paintLayer根据stac
 ## 例子
 * [`demo1`](https://codepen.io/yoution/pen/paOQpd)
 ![demo1](./images/demo1.png)
-蓝色方块由于前面的黄色的方块含有transformAnimation，所以蓝色方块生成AssumedOverlap原因
+蓝色方块由于前面的黄色的方块含有transformAnimation，所以蓝色方块生成AssumedOverlap原因   
+
+* [`demo2`](https://codepen.io/yoution/pen/paOQxa)
+![demo2](./images/demo2.png)
+蓝色方块和黄色方块dom顺序调换，同时提示蓝色方块的z-index，结果同demo1，应为在stackingContext中的遍历顺序不变
+
+* [`demo3`](https://codepen.io/yoution/pen/bLxQPr)
+![demo3](./images/demo3.png)
+蓝色方块含有直接原因kCompositingReason3DTransform，产生AssumedOverlap原因
 
 
 
