@@ -1,21 +1,29 @@
-参照![compositing的文章](http://taobaofed.org/blog/2016/04/25/performance-composite/), 学习compositing过程中，发现AssumedOverlap原因比较抽象，所以深入研究了下。
-composite过程是沿着paintLayer进行深度遍历，子paintLayer根据stackingContext的顺序进行遍历, 
-paintLayer根据compositing 直接原因和compositing间接原因判断是否需要compositing, 需要compositing的paintLayer会生成dui对应的graphicsLayer。
-而overlay和AssumedOverlay都是同一个stackingContext上才会发生的
-* compositing 直接原因
- 见![CompositingReasonFinder.cpp](https://github.com/bloomberg/chromium.bb/blob/master/src/third_party/WebKit/Source/core/layout/compositing/CompositingReasonFinder.cpp)
- * CompositingReasonVideoOverlay
- * kCompositingReasonRoot
- * ......
-* compositing 间接原因
-1, 64, 128, 256 8192 16382
-1 * kCompositingReasonVideoOverlay，父级路径上最近的能compositing的paintLayer的layoutObject为<video>
-64 kCompositingReason3DTransform，如,kPerspective, transform:perspective(400px),transform: translateZ(10)，transform:scaleZ(0.5)等
- > * kCompositingReasonRoot, layoutObject为HTMLDocument对应的paintLayer
-kCompositingReasonActiveAnimation, 包括opacityAnimation,transformAnimation,filterAnimation,backDropFilterAnimation
-8192 kCompositingReasonWillChangeCompositingHint,包括opacity,transform, translate, scale, rotate, top, left, bottom, right
-16382 kCompositingReasonBackdropFilter，即 backdrop-filter
-Overlay
-AssumedOverlap
+# AssumedOverlap reason
+参照[`compositing相关的一些文章`](http://taobaofed.org/blog/2016/04/25/performance-composite/), 学习compositing过程中，发现AssumedOverlap原因比较抽象，同时AssumedOverlapy原因一般会伴随其他原因同时出现，共同决定生成graphicsLayer，所以深入研究了下。   
+compositing过程是沿着paintLayer进行深度遍历，子paintLayer根据stackingContext的顺序进行遍历, paintLayer根据compositing原因判断是否需要compositing, 需要compositing的paintLayer会生成对应的graphicsLayer。   
+各个兄弟paintLayer沿着stackingContext的顺序遍历时，前面的compositing paintLayer会影响随后的paintLayer，会使随后的paintLayer产生Overlay和AssumedOverlay原因。   
 
-遍历stackingContext时当前paintLayer的前面的paintLayer不包transformAnimation  或者 当前paintLayer有compositing直接原因，则当前paintLayer的产生AssumedOverlap reason 效果
+## AssumedOverlap 直接原因
+这里的原因并非生成graphicsLayer的原因，生成graphicsLayer的原因包含AssumedOverlap原因，这里只讨论产生AssumedOverlap原因
+* kCompositingReasonVideoOverlay，父级路径上最近的能compositing的paintLayer的layoutObject为<video>
+* kCompositingReasonOverflowScrollingParent，父级paintLayer为overflow，且出现滚动条
+* kCompositingReason3DTransform，如transform:perspective(400px),transform: translateZ(10)，transform:scaleZ(0.5)等
+* kCompositingReasonActiveAnimation, 包括opacityAnimation,transformAnimation,filterAnimation,backDropFilterAnimation
+* kCompositingReasonWillChangeCompositingHint,包括opacity,transform, translate, scale, rotate, top, left, bottom, right
+* kCompositingReasonBackdropFilter，即 backdrop-filter
+
+## AssumedOverlap 产生
+遍历stackingContext时，当前paintLayer的前面存在相邻的compositing paintLayer，且满足下面任一条件，则产生AssumedOverlap原因
+* 前面存在相邻的compositing paintLayer有transformAnimation或者inline
+* 当前paintLayer有AssumedOverlap直接原因
+
+## 例子
+* [`demo1`](https://codepen.io/yoution/pen/paOQpd)
+![demo1](./images/demo1.png)
+蓝色方块由于前面的黄色的方块含有transformAnimation，所以蓝色方块生成AssumedOverlap原因
+
+
+
+
+## 参考
+* [`无线性能优化：Composite`](http://taobaofed.org/blog/2016/04/25/performance-composite/)
