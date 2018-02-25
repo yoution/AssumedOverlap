@@ -20,7 +20,7 @@ compositing过程是沿着paintLayer进行深度遍历，子paintLayer根据stac
 ## 例子
 * [`demo1`](https://codepen.io/yoution/pen/paOQpd)
 ![demo1](./images/demo1.png)
-蓝色方块由于前面的黄色的方块含有transformAnimation，所以蓝色方块生成AssumedOverlap原因   
+蓝色方块由于前面的黄色方块含有transformAnimation，所以蓝色方块生成AssumedOverlap原因   
 
 * [`demo2`](https://codepen.io/yoution/pen/paOQxa)
 ![demo2](./images/demo2.png)
@@ -28,12 +28,20 @@ compositing过程是沿着paintLayer进行深度遍历，子paintLayer根据stac
 
 * [`demo3`](https://codepen.io/yoution/pen/bLxQPr)
 ![demo3](./images/demo3.png)
-蓝色方块含有直接原因kCompositingReason3DTransform，产生AssumedOverlap原因   
+蓝色方块含有直接原因kCompositingReason3DTransform，所以产生AssumedOverlap原因   
 
 * [`demo4`](https://codepen.io/yoution/pen/paOqjZ)
 ![demo4](./images/demo4.png)
-AssumedOverlap原因的产生的只会影响相邻的paintLayer，所以黄色方块只影响蓝色，而没有影响紫色方块
+AssumedOverlap原因的产生的只会影响相邻的paintLayer，所以黄色方块只影响蓝色方块，而没有影响紫色方块   
 
+* [`demo5`](https://codepen.io/yoution/pen/QQVzxJ)
+![demo5](./images/demo5.png)
+对比demo1，黄色方块满足kCompositingReasonInlineTransform，但是却没有影响到蓝色生成AssumedOverlap原因，蓝色方块生成了squash原因，产生这种情况的原因是单一的AssumedOverlap原因不满足生成graphicsLayer的原因，所以导致这个原本满足AssumedOverlap原因的paintLayer被当作squash处理了
+
+
+* [`demo6`](https://codepen.io/yoution/pen/qxMgOm)
+![demo6](./images/demo6.png)
+对比demo5，蓝色方块本来是被作为squash原因处理了，但是蓝色方块增加了防止层压缩的属性reflect，从而显示出了AssumedOverlap原因
 
 
 ## 参考
