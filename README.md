@@ -36,7 +36,7 @@ AssumedOverlap原因的产生的只会影响相邻的paintLayer，所以黄色�
 
 * [`demo5`](https://codepen.io/yoution/pen/QQVzxJ)
 ![demo5](./images/demo5.png)
-对比demo1，黄色方块满足kCompositingReasonInlineTransform，但是却没有影响到蓝色生成AssumedOverlap原因，蓝色方块生成了squash原因，产生这种情况的原因是单一的AssumedOverlap原因不满足生成graphicsLayer(composited graphicsLayer)的原因，所以导致这个原本满足AssumedOverlap原因的paintLayer被当作squash处理了,layer图上可以看到，2个方块对应的layer的标示都显示了'.inline'，蓝色方块没有显示'.overlay'，这个其实是蓝色方块的squash原因生成的graphicsLayer，其实是作为黄色方块的squash graphicsLayer存在的，所以蓝色方块对应的layer显示了黄色方块的标示
+对比demo1，黄色方块满足kCompositingReasonInlineTransform，但是却没有影响到蓝色生成AssumedOverlap原因，蓝色方块生成了squash原因，产生这种情况的原因是单一的AssumedOverlap原因不满足生成graphicsLayer(composited graphicsLayer)的原因，所以导致这个原本满足AssumedOverlap原因的paintLayer被当作squash处理了,layer图上可以看到，2个方块对应的layer的标示都显示了`.inline`，蓝色方块没有显示`.overlay`，这个其实是蓝色方块的squash原因生成的graphicsLayer，其实是作为黄色方块的squash graphicsLayer存在的，所以蓝色方块对应的layer显示了黄色方块的标示
 
 
 * [`demo6`](https://codepen.io/yoution/pen/qxMgOm)
