@@ -24,7 +24,7 @@ compositing过程是沿着paintLayer进行深度遍历，子paintLayer根据stac
 
 * [`demo2`](https://codepen.io/yoution/pen/paOQxa)
 ![demo2](./images/demo2.png)
-蓝色方块和黄色方块dom顺序调换，同时提示蓝色方块的z-index，结果同demo1，因为在stackingContext中的遍历顺序不变，所以结果一样   
+蓝色方块和黄色方块dom顺序调换，同时提高蓝色方块的z-index，结果同demo1，因为在stackingContext中的遍历顺序不变，所以结果一样   
 
 * [`demo3`](https://codepen.io/yoution/pen/bLxQPr)
 ![demo3](./images/demo3.png)
